@@ -1,13 +1,27 @@
 package com.jyujyu.review.api;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TestApi {
 
     @GetMapping("/hello/world")
     public String helloWorld(){
-        return "hello, world!";
+        return "[GET] hello, world!";
+    }
+
+    @PostMapping("/hello/world")
+    public String postHelloWorld(){
+        return "[Post] Hello, world";
+    }
+
+    @PutMapping("/hello/world")
+    public String putHelloWorld() {
+        return "[Put] Hello, world";
+    }
+
+    @DeleteMapping("/hello/world")
+    public String deleteHelloWorld(){
+        return "[Delete] Hello World";
     }
 }
