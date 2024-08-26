@@ -15,6 +15,11 @@ public class TestService {
         testRepository.save(testEntity);
     }
 
+    public void update(Long id, String name, Integer age){
+        TestEntity testEntity = testRepository.findById(id).orElseThrow(); //orElseThrow()는 아이디가 없을 경우 예외처리
+        testEntity.changeNameAndAge(name, age);
+        testRepository.save(testEntity);
+    }
     public void delete(Long id){
         TestEntity testEntity = testRepository.findById(id).get();
         testRepository.delete(testEntity);

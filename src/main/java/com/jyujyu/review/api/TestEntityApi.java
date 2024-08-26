@@ -24,6 +24,14 @@ public class TestEntityApi {
         testService.create(request.getName(), request.getAge());
     }
 
+    @PutMapping("/test/entity/{id}")
+    public void putTestEntity(
+            @PathVariable Long id,
+            @RequestBody CreateTestEntityRequest request
+    ){
+        testService.update(id, request.getName(), request.getAge());
+    }
+
     @DeleteMapping("/test/entity/{id}")
     public void deleteTestEntity(
             @PathVariable Long id
@@ -37,4 +45,6 @@ public class TestEntityApi {
         private final String name;
         private final Integer age;
     }
+
+
 }

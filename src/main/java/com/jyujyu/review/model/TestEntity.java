@@ -21,4 +21,9 @@ public class TestEntity {
     public TestEntity(){
 
     }
+
+    public void changeNameAndAge(String name, Integer age){
+        this.name = name;
+        this.age = age;
+    }
 }
