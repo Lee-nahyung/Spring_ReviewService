@@ -30,4 +30,8 @@ public class TestService {
     public List<TestEntity> findAllByNameByJPA(String name){
         return testRepository.findAllByName(name);
     }
+
+    public List<TestEntity> findAllByNameByQuerydsl(String name){
+        return testRepository.findAllByNameByQuerydsl(name);
+    }
 }
