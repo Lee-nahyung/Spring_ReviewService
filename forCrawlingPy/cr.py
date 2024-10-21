@@ -1,20 +1,23 @@
+import time
+import csv
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 
-import locale
-import time
-from time import sleep
-from selenium import webdriver
+
+# CSV 파일 생성 및 열기
+csv_file = open('restaurant_info.csv', mode='w', newline='', encoding='utf-8-sig')
+csv_writer = csv.writer(csv_file)
+
+# CSV 파일에 헤더 추가
+csv_writer.writerow(["식당 번호", "식당명", "주소", "전화번호"])
 
 # 크롬 드라이버 설정
 driver = webdriver.Chrome()
 
-# 네이버 지도 페이지 접속 (실제 URL로 교체 필요)
+# 네이버 지도 페이지 접속
 url = "https://map.naver.com/p/search/%EC%88%9C%EC%B2%9C%ED%96%A5%EB%8C%80%20%EC%8B%9D%EB%8B%B9?c=15.00,0,0,0,dh"
 driver.get(url)
 
@@ -27,8 +30,9 @@ driver.switch_to.frame(iframe)
 
 page_num = 1
 restaurant_num = 1  # 전체 식당 번호를 추적하기 위한 변수
+max_pages = 3  # 크롤링할 페이지 수 제한 (3페이지까지만 크롤링)
 
-while True:
+while page_num <= max_pages:
     print(f"=== {page_num} 페이지 ===")
 
     # 페이지 내에서 스크롤을 내려 모든 식당을 로드
@@ -72,6 +76,10 @@ while True:
                 phone_number = "null"  # 전화번호가 없으면 null 출력
             print(f"전화번호: {phone_number}")
 
+            # CSV 파일에 데이터 쓰기
+            csv_writer.writerow([restaurant_num, restaurant_name, address, phone_number])
+
+
             # 다시 검색 리스트로 돌아가기
             driver.switch_to.default_content()
             iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "iframe#searchIframe")))
@@ -92,6 +100,9 @@ while True:
     except Exception as e:
         print("더 이상 페이지가 없습니다. 크롤링을 종료합니다.")
         break
+
+# CSV 파일 닫기
+csv_file.close()
 
 # 크롤링 완료 후 브라우저 닫기
 driver.quit()
